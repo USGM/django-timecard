@@ -18,6 +18,7 @@ def build_hours(queryset):
             
     for date, (another_date, entries, hours) in work_days.iteritems():
         entries.sort(key=lambda x: x.start_time)
+        work_days[date] = (another_date, entries, hours)
         
     print work_days
             
@@ -32,10 +33,10 @@ def my_time(request):
     
     user = request.user
     
-    upcoming_time = build_hours(Entry.objects.filter(user=user, status=Entry.UPCOMING))
+    upcoming_days = build_hours(Entry.objects.filter(user=user, status=Entry.UPCOMING))
     
-    paid_time = build_hours(Entry.objects.filter(user=user, status=Entry.PAID))
+    paid_days = build_hours(Entry.objects.filter(user=user, status=Entry.PAID))
     
     return render_to_response("my_timecard.html", 
-                              {'upcoming_time': upcoming_time, 'paid_time': paid_time, }, 
+                              {'upcoming_days': upcoming_days, 'paid_days': paid_days, }, 
                               context_instance=RequestContext(request))
