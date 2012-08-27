@@ -16,7 +16,7 @@ def build_hours(queryset):
         except KeyError:
             work_days[entry.date] = (entry.date, [entry, ], entry.hours)
             
-    for date, (another_date, entries, hours) in work_days:
+    for date, (another_date, entries, hours) in work_days.iteritems():
         entries.sort(key=lambda x: x.start_time)
             
     return work_days.values().sort(key=lambda x: x.date)
