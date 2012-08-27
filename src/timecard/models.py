@@ -52,5 +52,7 @@ class Entry(models.Model):
 		return float(diff.seconds)
 	
 	@property
-	def difference_hours(self):
-		return self.difference / 3600.00
+	def hours(self):
+		hours = self.difference / 3600.00
+		return Decimal("%0.2f" % (round(hours, 2), ))
+		
