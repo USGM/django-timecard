@@ -19,7 +19,7 @@ def build_hours(queryset):
     for date, (another_date, entries, hours) in work_days.iteritems():
         entries.sort(key=lambda x: x.start_time)
             
-    return work_days.values().sort(key=lambda x: x[0].date)
+    return work_days.values().sort(key=lambda x: x[0])
 
 def my_time(request):
     
