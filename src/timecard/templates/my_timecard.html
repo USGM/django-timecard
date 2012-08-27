@@ -38,13 +38,12 @@
   <thead>
     <tr>
       <th>Date</th>
-      <th>Start Time</th>
-      <th>End Time</th>
+      <th>Times</th>
       <th>Hours</th>
     </tr>
   </thead>
   <tbody>
-    {% for date, entries, hours in upcoming_days %}
+    {% for date, entries, hours in paid_days %}
     <tr>
       <td>{{ date }}</td>
       <td>
