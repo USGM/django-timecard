@@ -18,6 +18,8 @@ def build_hours(queryset):
             
     for date, (another_date, entries, hours) in work_days.iteritems():
         entries.sort(key=lambda x: x.start_time)
+        
+    print work_days
             
     work_day_list = work_days.values()
     work_day_list.sort(key=lambda x: x[0])
