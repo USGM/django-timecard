@@ -42,6 +42,12 @@ class Entry(models.Model):
 			return u"%s: %s-%s" % (self.date.isoformat(), self.start_time.isoformat(), self.end_time.isoformat())
 		else:
 			return u"%s: %s" % (self.date.isoformat(), self.start_time.isoformat())
+		
+	def summary(self):
+		if self.end_time:
+			return u'%s-%s' % (self.start_time.isoformat(), self.end_time.isoformat())
+		else:
+			return u'%s' % (self.start_time.isoformat(), )
 	
 	@property
 	def difference(self):

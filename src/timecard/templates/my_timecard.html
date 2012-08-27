@@ -8,46 +8,58 @@
 
 <h2>My Upcoming Hours</h2>
 <table>
-  <tr>
-    <th>Day</th>
-    <th>Start Time</th>
-    <th>End Time</th>
-    <th>Hours</th>
-  <tr>
-  {% for entry in upcoming_time %}
-  <tr>
-    <td>{{ entry.date }}</td>
-    <td>{{ entry.start_time }}</td>
-    <td>{{ entry.end_time }}</td>
-    <td>{{ entry.hours }}</td>
-  </tr>
-  {% empty %}
-  <tr>
-    <td colspan='4'>You don't have any upcoming hours right now.</td>
-  </tr>
-  {% endfor %}
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Times</th>
+      <th>Hours</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for date, entries, hours in upcoming_days %}
+    <tr>
+      <td>{{ date }}</td>
+      <td>
+        {% for entry in entries %}
+          {{ entry.summary }}
+        {% endfor %}
+      <td>{{ hours }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan='4'>You don't have any upcoming hours right now.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
 
 <h2>My Paid Hours</h2>
 <table>
-  <tr>
-    <th>Day</th>
-    <th>Start Time</th>
-    <th>End Time</th>
-    <th>Hours</th>
-  <tr>
-  {% for entry in paid_time %}
-  <tr>
-    <td>{{ entry.date }}</td>
-    <td>{{ entry.start_time }}</td>
-    <td>{{ entry.end_time }}</td>
-    <td>{{ entry.hours }}</td>
-  </tr>
-  {% empty %}
-  <tr>
-    <td colspan='4'>You don't have any paid hours right now.</td>
-  </tr>
-  {% endfor %}
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Hours</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for entry in upcoming_time %}
+    {% for date, entries, hours in upcoming_days %}
+    <tr>
+      <td>{{ date }}</td>
+      <td>
+        {% for entry in entries %}
+          {{ entry.summary }}
+        {% endfor %}
+      <td>{{ hours }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan='4'>You don't have any upcoming hours right now.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
 
 {% endblock %}

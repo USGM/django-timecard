@@ -5,13 +5,29 @@ from django.shortcuts import render_to_response
 
 from timecard.models import Entry
 
+def build_hours(queryset):
+    work_days = {}
+    for entry in queryset:
+        try:
+            (date, entries, hours) = work_days[entry.date]
+            entries.append(entry)
+            hours += entry.hours
+            work_days = (date, entries, hours)
+        except KeyError:
+            work_days[entry.date] = (entry.date, [entry, ], entry.hours)
+            
+    for date, (another_date, entries, hours) in work_days:
+        entries.sort(key=lambda x: x.start_time)
+            
+    return work_days.values().sort(key=lambda x: x.date)
+
 def my_time(request):
     
     user = request.user
     
-    upcoming_time = Entry.objects.filter(user=user, status=Entry.UPCOMING)
+    upcoming_time = build_hours(Entry.objects.filter(user=user, status=Entry.UPCOMING))
     
-    paid_time = Entry.objects.filter(user=user, status=Entry.PAID)
+    paid_time = build_hours(Entry.objects.filter(user=user, status=Entry.PAID))
     
     return render_to_response("my_timecard.html", 
                               {'upcoming_time': upcoming_time, 'paid_time': paid_time, }, 
