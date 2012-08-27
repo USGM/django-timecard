@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from timecard.views import *
 
 urlpatterns = patterns('timecard.views',
                        
