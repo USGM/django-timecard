@@ -9,6 +9,6 @@ class EntryAdmin(admin.ModelAdmin):
 	
 	def difference_hours(self, entry):
 		hours = float(entry.difference) / 3600.0
-		return "0.00f" % (hours, )
+		return "0.02f" % (hours, )
 
 admin.site.register(Entry, EntryAdmin)
