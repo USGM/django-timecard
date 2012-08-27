@@ -1,5 +1,4 @@
 from django.contrib import admin
-from decimal import Decimal
 from timecard.models import Entry
 
 class EntryAdmin(admin.ModelAdmin):
