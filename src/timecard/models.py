@@ -40,3 +40,7 @@ class Entry(models.Model):
 			diff = datetime.datetime.now() - datetime.datetime.combine(self.date, self.start_time)
 		
 		return float(diff.seconds)
+	
+	@property
+	def difference_hours(self):
+		return self.difference / 3600.00

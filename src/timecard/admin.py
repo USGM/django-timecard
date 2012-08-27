@@ -3,12 +3,12 @@ from django.contrib import admin
 from timecard.models import Entry
 
 class EntryAdmin(admin.ModelAdmin):
-	list_display = ('date', 'user', 'start_time', 'end_time', 'difference_hours')
+	list_display = ('date', 'user', 'start_time', 'end_time', 'difference_hours_nice')
 	list_filter = ('user',)
 	date_hierarchy = 'date'
 	
-	def difference_hours(self, entry):
-		hours = float(entry.difference) / 3600.0
-		return "0.02f" % (hours, )
+	def difference_hours_nice(self, entry):
+		hours = entry.difference_hours
+		return round(hours, 2)
 
 admin.site.register(Entry, EntryAdmin)
