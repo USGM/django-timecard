@@ -3,8 +3,8 @@ from django.contrib import admin
 from timecard.models import Entry
 
 class EntryAdmin(admin.ModelAdmin):
-	list_display = ('date', 'user', 'start_time', 'end_time', 'difference_hours_nice')
-	list_filter = ('user',)
+	list_display = ('date', 'user', 'start_time', 'end_time', 'difference_hours_nice', 'status', )
+	list_filter = ('user', 'status', )
 	date_hierarchy = 'date'
 	
 	def difference_hours_nice(self, entry):
