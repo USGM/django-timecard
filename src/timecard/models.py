@@ -10,12 +10,22 @@ from timecard.managers import EntryManager
 class Entry(models.Model):
 	"""A Timecard Entry."""
 	
+	UPCOMING = 1
+	PAID = 100
+	
+	ENTRY_STATUSES = (
+		(UPCOMING, 'Upcoming'),
+		(PAID, 'Paid'),
+	)
+	
 	date = models.DateField()
 	
 	start_time = models.TimeField()
 	end_time = models.TimeField(blank=True, null=True)
 	
 	user = models.ForeignKey(User)
+	
+	status = models.IntegerField(choices=ENTRY_STATUSES, default=UPCOMING)
 	
 	objects = EntryManager()
 	
