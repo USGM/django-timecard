@@ -62,3 +62,4 @@ BREAK_DURATION_CHOICES = (
 class BreakForm(forms.Form):
 	duration = forms.ChoiceField(label=u'Duration', choices=BREAK_DURATION_CHOICES)
 	fm_name = forms.CharField(widget=forms.HiddenInput, initial=u'BreakForm')
+	

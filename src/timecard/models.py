@@ -45,9 +45,9 @@ class Entry(models.Model):
 		
 	def summary(self):
 		if self.end_time:
-			return u'%s-%s' % (self.start_time.isoformat(), self.end_time.isoformat())
+			return u'%s to %s' % (self.start_time.strftime("%H:%M"), self.end_time.strftime("%H:%M"))
 		else:
-			return u'%s' % (self.start_time.isoformat(), )
+			return u'%s to ? ' % (self.start_time.strftime("%H:%M"), )
 	
 	@property
 	def difference(self):
