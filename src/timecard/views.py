@@ -37,7 +37,12 @@ def build_hours(iterable):
     work_day_list = work_days.values()
     work_day_list.sort()
     
-    return work_day_list, total_hours
+    
+    hours_part = int(floor(total_hours))
+    minutes_part = round((total_hours - hours_part)*60, 0)
+    hours_and_minutes = "%d:%d" % (hours_part, minutes_part)
+    
+    return work_day_list, total_hours, hours_and_minutes
 
 def nearest_minute():
     """
@@ -86,9 +91,9 @@ def my_time(request):
     
     user = request.user
     
-    upcoming_days, upcoming_hours = build_hours(Entry.objects.filter(user=user, status=Entry.UPCOMING))
+    upcoming_days, upcoming_hours, upcoming_hours_minutes = build_hours(Entry.objects.filter(user=user, status=Entry.UPCOMING))
     
-    paid_days, paid_hours = build_hours(Entry.objects.filter(user=user, status=Entry.PAID))
+    paid_days, paid_hours, paid_hours_minutes = build_hours(Entry.objects.filter(user=user, status=Entry.PAID))
     
     return render_to_response("my_timecard.html", 
                               {
