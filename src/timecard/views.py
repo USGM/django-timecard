@@ -41,7 +41,7 @@ def build_hours(iterable):
     
     hours_part = int(floor(total_hours))
     minutes_part = round((total_hours - hours_part)*60, 0)
-    hours_and_minutes = "%d:%d" % (hours_part, minutes_part)
+    hours_and_minutes = "%d:%02d" % (hours_part, minutes_part)
     
     return work_day_list, total_hours, hours_and_minutes
 
