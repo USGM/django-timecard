@@ -119,8 +119,8 @@ def build_employee_report(iterable):
             
             
     for user, entrylist in employees.iteritems():
-        work_days, hours = build_hours(entrylist)
-        report_list.append((user, work_days, hours))
+        work_days, hours, hours_and_minutes = build_hours(entrylist)
+        report_list.append((user, work_days, hours, hours_and_minutes))
         
     return report_list
         
