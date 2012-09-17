@@ -53,10 +53,15 @@ class Entry(models.Model):
 	def difference(self):
 		if self.end_time:
 			diff = datetime.datetime.combine(self.date, self.end_time) - datetime.datetime.combine(self.date, self.start_time)
+			seconds = diff.seconds
 		else:
 			diff = datetime.datetime.now() - datetime.datetime.combine(self.date, self.start_time)
+			if diff.days < 0:
+				seconds = 0
+			else:
+				seconds = diff.seconds
 		
-		return float(diff.seconds)
+		return float(seconds)
 	
 	@property
 	def hours(self):
