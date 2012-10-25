@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import user_passes_test
 
 from timecard.models import Entry
 from timecard import *
@@ -59,6 +62,7 @@ def nearest_minute():
     nearest_minute = time(now.hour, now.minute)
     return nearest_minute
 
+@login_required
 def my_time(request):
     
     if request.method == "POST":
@@ -125,7 +129,7 @@ def build_employee_report(iterable):
     return report_list
         
 
-@staff_member_required
+@permission_required('timecard.change_entry')
 def admin_upcoming_hours(request):
     upcoming_paychecks = Entry.objects.filter(status=Entry.UPCOMING)
     
