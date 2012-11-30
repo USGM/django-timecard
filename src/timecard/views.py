@@ -104,6 +104,7 @@ def my_time(request):
                               {
                                'upcoming_days': upcoming_days, 
                                'upcoming_hours': upcoming_hours,
+                               'upcoming_hours_minutes': upcoming_hours_minutes,
                                'paid_days': paid_days, 
                                'paid_hours': paid_hours,
                                'can_punch_in': can_punch_in(request.user),
