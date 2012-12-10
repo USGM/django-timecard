@@ -1,4 +1,5 @@
 from django import template
+from math import *
 
 register = template.Library()
 
