@@ -4,12 +4,11 @@ from decimal import Decimal
 from django.conf import settings
 from django.db import models
 from django.db.models import permalink
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 from timecard.managers import EntryManager
 
-User = settings.AUTH_USER_MODEL
+UserKey = settings.AUTH_USER_MODEL
 
 class Entry(models.Model):
 	"""A Timecard Entry."""
@@ -27,7 +26,7 @@ class Entry(models.Model):
 	start_time = models.TimeField()
 	end_time = models.TimeField(blank=True, null=True)
 	
-	user = models.ForeignKey(User)
+	user = models.ForeignKey(UserKey)
 	
 	status = models.IntegerField(choices=ENTRY_STATUSES, default=UPCOMING)
 	
