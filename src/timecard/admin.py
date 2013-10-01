@@ -1,5 +1,8 @@
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 from timecard.models import Entry
+
+User = get_user_model()
 
 def mark_paid(modeladmin, request, queryset):
     """
@@ -23,4 +26,9 @@ class EntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
     actions = [mark_paid, mark_upcoming]
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'user':
+            kwargs['queryset'] = User.objects.filter(is_staff=True)
+        return super(EntryAdmin, self).formfield_for_foreignkey(db_field,
+            request, **kwargs)
 admin.site.register(Entry, EntryAdmin)
