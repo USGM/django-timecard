@@ -7,7 +7,7 @@ def read(fname):
 
 setup(
     name = 'django-timecard',
-    version = '0.3',
+    version = '0.4',
     url = 'http://github.com/USGM/django-timecard',
     license = 'BSD License',
     description = 'A Django timecard application.',
@@ -20,7 +20,6 @@ setup(
     package_dir = {'': 'src'},
 	
     install_requires = [
-        'setuptools',
         'python-dateutil',
         'isoweek'],
 	
