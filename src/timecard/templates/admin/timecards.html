@@ -1,24 +1,18 @@
 {% extends "base.html" %}
-
-{% block extra_head %}
-<link type="text/css" href="{{ STATIC_URL }}jquery/css/redmond/jquery-ui-1.8.13.custom.css" rel="stylesheet" />  
-<script type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery-1.5.1.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}jquery/js/jquery-ui-1.8.13.custom.min.js"></script>
-<script>
-  $(function() {
-    $("#id_from_date").datepicker();
-    $("#id_to_date").datepicker();
-  });
-  
-</script>
-{% endblock %}
-
+{% include sekezai_tags %}
 {% block page_title %}
 <h1>Time Report</h1>
 {% endblock %}
 
 {% block content %}
-
+{% addtoblock 'js' %}
+<script>
+  $(function() {
+    $("#id_from_date").datepicker();
+    $("#id_to_date").datepicker();
+  });
+</script>
+{% endaddtoblock %}
 <form method='POST'> {% csrf_token %}
   <fieldset>
     <legend>Filter</legend>
