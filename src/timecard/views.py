@@ -130,7 +130,7 @@ def build_employee_report(iterable):
     return report_list
         
 
-@permission_required('timecard.change_entry')
+@permission_required('timecard.review_entries')
 def admin_upcoming_hours(request):
     upcoming_paychecks = Entry.objects.filter(status=Entry.UPCOMING)
     

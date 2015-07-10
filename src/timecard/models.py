@@ -38,6 +38,7 @@ class Entry(models.Model):
 		db_table = 'timecard_entries'
 		get_latest_by = 'date'
 		ordering = ('-date', '-start_time')
+		permissions = (("review_entries", "Can review entries"),)
 	
 	def __unicode__(self):
 		if self.end_time:
