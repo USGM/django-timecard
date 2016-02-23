@@ -1,23 +1,19 @@
-from django.http import Http404
+import datetime
+
+from dateutil.relativedelta import relativedelta
 from django.template import RequestContext
-from django.contrib.auth.models import User
 from django.shortcuts import render_to_response
 from django.contrib import messages
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.decorators import user_passes_test
+from math import floor
 
+from timecard import can_punch_in, can_punch_out
 from timecard.models import Entry
-from timecard import *
-from datetime import *
-from dateutil import *
-from dateutil.relativedelta import *
-from math import *
 
-from warehouse.forms import DateRangeForm
 
 import operator
+
 
 def build_hours(iterable):
     
@@ -48,6 +44,7 @@ def build_hours(iterable):
     
     return work_day_list, total_hours, hours_and_minutes
 
+
 def nearest_minute():
     """
     If you don't add 30 seconds then you're always truncating with an
@@ -59,8 +56,9 @@ def nearest_minute():
     weeks the math says we're now unbiased.
     """
     now = datetime.now() + relativedelta(seconds=30)
-    nearest_minute = time(now.hour, now.minute)
+    nearest_minute = datetime.time(now.hour, now.minute)
     return nearest_minute
+
 
 @login_required
 def my_time(request):
@@ -68,7 +66,7 @@ def my_time(request):
     if request.method == "POST":
         if "punch_in" in request.POST:
             if can_punch_in(request.user):
-                new_entry = Entry(user=request.user, date=date.today(), start_time=nearest_minute())
+                new_entry = Entry(user=request.user, date=datetime.date.today(), start_time=nearest_minute())
                 new_entry.save()
             else:
                 messages.error(request, "You can't punch in yet since you have open entries")
@@ -112,6 +110,7 @@ def my_time(request):
                                }, 
                               context_instance=RequestContext(request))
 
+
 def build_employee_report(iterable):
     employees = {}
     
@@ -121,7 +120,6 @@ def build_employee_report(iterable):
             employees[entry.user].append(entry)
         except KeyError:
             employees[entry.user] = [entry, ]
-            
             
     for user, entrylist in employees.iteritems():
         work_days, hours, hours_and_minutes = build_hours(entrylist)
@@ -146,12 +144,10 @@ def admin_upcoming_hours(request):
             
     report_list = build_employee_report(upcoming_paychecks)
     
-    return render_to_response("admin/timecards.html", 
-                              {
-                               'report_list': report_list,
-                               'filter_form': filter_form,
-                               }, 
-                              context_instance=RequestContext(request))
-    
-    
-    
+    return render_to_response(
+            "admin/timecards.html", {
+                'report_list': report_list,
+                'filter_form': filter_form,
+            },
+            context_instance=RequestContext(request)
+    )
