@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, date, time
 
 from dateutil.relativedelta import relativedelta
 from django.template import RequestContext
@@ -13,6 +13,8 @@ from timecard.models import Entry
 
 
 import operator
+
+from timecard.forms import DateRangeForm
 
 
 def build_hours(iterable):
@@ -56,8 +58,7 @@ def nearest_minute():
     weeks the math says we're now unbiased.
     """
     now = datetime.now() + relativedelta(seconds=30)
-    nearest_minute = datetime.time(now.hour, now.minute)
-    return nearest_minute
+    return time(now.hour, now.minute)
 
 
 @login_required
@@ -66,7 +67,7 @@ def my_time(request):
     if request.method == "POST":
         if "punch_in" in request.POST:
             if can_punch_in(request.user):
-                new_entry = Entry(user=request.user, date=datetime.date.today(), start_time=nearest_minute())
+                new_entry = Entry(user=request.user, date=date.today(), start_time=nearest_minute())
                 new_entry.save()
             else:
                 messages.error(request, "You can't punch in yet since you have open entries")
@@ -83,10 +84,16 @@ def my_time(request):
             
                 count = empty_entries.count()
                 if count >= 1:
-                    messages.error(request, "You can't punch out since there are %d punch-ins during the last 24 hours!" % count)
+                    messages.error(
+                        request,
+                        "You can't punch out since there are %d punch-ins during the last 24 hours!" % count
+                    )
                     
                 elif count <= 0:
-                    messages.error(request, "You can't punch out since there isn't a punch-in during the last 24 hours!")
+                    messages.error(
+                        request,
+                        "You can't punch out since there isn't a punch-in during the last 24 hours!"
+                    )
                     
                 else:
                     messages.error(request, "I don't know what went wrong here!")
@@ -94,7 +101,11 @@ def my_time(request):
     
     user = request.user
     
-    upcoming_days, upcoming_hours, upcoming_hours_minutes = build_hours(Entry.objects.filter(user=user, status=Entry.UPCOMING))
+    upcoming_days, upcoming_hours, upcoming_hours_minutes = build_hours(
+        Entry.objects.filter(
+            user=user, status=Entry.UPCOMING
+        )
+    )
     
     paid_days, paid_hours, paid_hours_minutes = build_hours(Entry.objects.filter(user=user, status=Entry.PAID))
     
@@ -140,8 +151,7 @@ def admin_upcoming_hours(request):
         
         if filter_form.is_valid():
             upcoming_paychecks = upcoming_paychecks.filter(filter_form.get_query('date'))
-            
-            
+
     report_list = build_employee_report(upcoming_paychecks)
     
     return render_to_response(
